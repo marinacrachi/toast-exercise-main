@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
@@ -19,14 +19,6 @@ export default function Header() {
     createMockFormSubmission();
     setIsToastOpen(true);
   };
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-    return;
-    }
-
-    setIsToastOpen(false);
-};
 
   return (
     <Box sx={{flexGrow: 1}}>
