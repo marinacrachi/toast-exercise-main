@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
@@ -8,9 +8,26 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
+import { SubmissionContext } from './context/submissionContext';
+
 import { createMockFormSubmission } from './service/mockServer';
 
 export default function Header() {
+  const { setIsToastOpen } = useContext(SubmissionContext);
+
+  const handleClick = () => {
+    createMockFormSubmission();
+    setIsToastOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+    return;
+    }
+
+    setIsToastOpen(false);
+};
+
   return (
     <Box sx={{flexGrow: 1}}>
       <AppBar position="static">
@@ -30,7 +47,7 @@ export default function Header() {
             variant="contained"
             size="small"
             color="secondary"
-            onClick={() => createMockFormSubmission()}
+            onClick={handleClick}
           >
             New Submission
           </Button>
@@ -39,3 +56,4 @@ export default function Header() {
     </Box>
   );
 }
+
