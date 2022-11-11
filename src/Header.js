@@ -8,9 +8,8 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
-import { SubmissionContext } from './context/submissionContext';
-
 import { createMockFormSubmission } from './service/mockServer';
+import { SubmissionContext } from './context/submissionContext';
 
 export default function Header() {
   const { setIsToastOpen } = useContext(SubmissionContext);

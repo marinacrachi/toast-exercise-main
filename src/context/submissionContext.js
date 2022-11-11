@@ -1,5 +1,5 @@
 import React, { useState, createContext, useEffect } from "react";
-import { onMessage } from "../service/mockServer";
+import { onMessage, fetchLikedFormSubmissions } from "../service/mockServer";
 export const SubmissionContext = createContext();
 
 export default function SubmissionToastProvider({ children }) {
@@ -15,6 +15,14 @@ export default function SubmissionToastProvider({ children }) {
     };
     getCurrentSubmission();
   }, [isToastOpen])
+
+  useEffect(() => {
+    const getLikedSubmissions = async () => {
+        const { formSubmissions } = await fetchLikedFormSubmissions();
+        setLikedSubmissions(formSubmissions);
+    };
+    getLikedSubmissions();
+  }, [currentSubmission])
 
   return (
     <SubmissionContext.Provider

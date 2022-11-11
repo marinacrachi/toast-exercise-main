@@ -5,6 +5,7 @@ import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
+import { saveLikedFormSubmission } from "../service/mockServer";
 import { SubmissionContext } from "../context/submissionContext";
 
 export default function SubmissionToast() {
@@ -14,13 +15,19 @@ export default function SubmissionToast() {
     currentSubmission,
     setCurrentSubmission,
   } = useContext(SubmissionContext);
+  const { firstName, lastName, email } = currentSubmission;
 
-  const handleOnCloseToast = useCallback(() => {
+  const handleCloseToast = useCallback(() => {
     setIsToastOpen(false);
     setCurrentSubmission({});
   }, [setCurrentSubmission, setIsToastOpen]);
 
-  const { firstName, lastName, email } = currentSubmission;
+  const handleLikeSubmission = useCallback(async () => {
+    console.log("liked");
+    await saveLikedFormSubmission({ ...currentSubmission, liked: true });
+    setIsToastOpen(false);
+    setCurrentSubmission({});
+  }, [currentSubmission, setCurrentSubmission, setIsToastOpen]);
 
   return (
     <div>
@@ -31,7 +38,7 @@ export default function SubmissionToast() {
         }}
         open={isToastOpen}
         autoHideDuration={5000}
-        onClose={handleOnCloseToast}
+        onClose={handleCloseToast}
         message={
           <div>
             <div>
@@ -42,14 +49,14 @@ export default function SubmissionToast() {
         }
         action={
           <>
-            <Button color="primary" size="small" onClick={handleOnCloseToast}>
+            <Button color="primary" size="small" onClick={handleLikeSubmission}>
               LIKE
             </Button>
             <IconButton
               size="small"
               aria-label="close"
               color="inherit"
-              onClick={handleOnCloseToast}
+              onClick={handleCloseToast}
             >
               <CloseIcon fontSize="small" />
             </IconButton>
