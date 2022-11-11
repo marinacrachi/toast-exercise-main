@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from "react";
+import React, { useContext, useCallback, useState } from "react";
 
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
@@ -16,18 +16,24 @@ export default function SubmissionToast() {
     setCurrentSubmission,
   } = useContext(SubmissionContext);
   const { firstName, lastName, email } = currentSubmission;
+  const [isSavingSubmission, setIsSavingSubmission] = useState(false);
 
   const handleCloseToast = useCallback(() => {
     setIsToastOpen(false);
     setCurrentSubmission({});
+    setIsSavingSubmission(false);
   }, [setCurrentSubmission, setIsToastOpen]);
 
   const handleLikeSubmission = useCallback(async () => {
-    console.log("liked");
-    await saveLikedFormSubmission({ ...currentSubmission, liked: true });
-    setIsToastOpen(false);
-    setCurrentSubmission({});
-  }, [currentSubmission, setCurrentSubmission, setIsToastOpen]);
+    try {
+      setIsSavingSubmission(true);
+      await saveLikedFormSubmission({ ...currentSubmission, liked: true });
+      handleCloseToast();
+    } catch (error) {
+      setIsSavingSubmission(false);
+      alert('Oh no! There was an error liking this submission. Please try again.');
+    }
+  }, [currentSubmission, handleCloseToast]);
 
   return (
     <div>
@@ -37,7 +43,6 @@ export default function SubmissionToast() {
           horizontal: "right",
         }}
         open={isToastOpen}
-        autoHideDuration={5000}
         onClose={handleCloseToast}
         message={
           <div>
@@ -49,7 +54,12 @@ export default function SubmissionToast() {
         }
         action={
           <>
-            <Button color="primary" size="small" onClick={handleLikeSubmission}>
+            <Button
+              color="primary"
+              size="small"
+              disabled={isSavingSubmission}
+              onClick={handleLikeSubmission}
+            >
               LIKE
             </Button>
             <IconButton

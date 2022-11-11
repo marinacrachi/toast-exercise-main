@@ -56,7 +56,6 @@ export async function fetchLikedFormSubmissions() {
  * percent of the time.
  */
 export async function saveLikedFormSubmission(formSubmission) {
-  console.log('formSubmission', formSubmission);
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       // We have a really flakey server that has issues
