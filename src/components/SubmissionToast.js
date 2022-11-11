@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { saveLikedFormSubmission } from "../service/mockServer";
 import { SubmissionContext } from "../context/submissionContext";
@@ -18,7 +19,7 @@ export default function SubmissionToast() {
   const { firstName, lastName, email } = currentSubmission;
   const [isSavingSubmission, setIsSavingSubmission] = useState(false);
 
-  const handleCloseToast = useCallback(() => {
+  const handleCloseToast = useCallback(() => {    
     setIsToastOpen(false);
     setCurrentSubmission({});
     setIsSavingSubmission(false);
@@ -60,7 +61,7 @@ export default function SubmissionToast() {
               disabled={isSavingSubmission}
               onClick={handleLikeSubmission}
             >
-              LIKE
+              {isSavingSubmission ? (<CircularProgress />) : "Like"}
             </Button>
             <IconButton
               size="small"
